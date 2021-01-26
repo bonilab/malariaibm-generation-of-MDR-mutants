@@ -6,6 +6,8 @@
 
 ## Release Note
 
+*Jan 25, 2021*: Files are migrated to this repo from @lizhewen's [fork](https://github.com/lizhewen/PSU-CIDD-Malaria-Simulation) as a frozen version. Output files from various simulations and generated visualization figures will also be updated in this repo.
+
 This version (v3.3) is developed for the Multiple-Drug-Resistant (MDR) paper. This codebase is based off Dang Nguyen Tran's v3.2 located in [this repo](https://github.com/maciekboni/PSU-CIDD-Malaria-Simulation).
 
 This version has implemented Sporozoite Challenge codes, and a modified monthly reporter to output all mutation pair information throughout the simulation. **This version only supports single-location simulations.**
