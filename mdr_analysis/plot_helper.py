@@ -265,3 +265,28 @@ def coloring_legend(mdr_case, option):
       return "#fc9272" # [60,70) - light red
     else:
       return "#ef3b2c" # [0,60) - medium red
+
+def calculate_AUC_from_dflist_for_dangerous_triple(dflist, pattern):
+  from constant import REPORTDAYS, FIRST_ROW_AFTER_BURNIN
+  REPORTDAYS = REPORTDAYS[FIRST_ROW_AFTER_BURNIN:]
+  AUCs = []
+  for onerun in dflist:
+    geno_freq = onerun.filter(regex=pattern, axis=1).sum(axis=1)
+    geno_freq = geno_freq[FIRST_ROW_AFTER_BURNIN:]
+    AUCs.append(np.trapz(geno_freq, x=REPORTDAYS))
+  return AUCs
+
+def calculate_AUC_from_dflist_for_dangerous_double(dflist, drug):
+  from constant import REPORTDAYS, FIRST_ROW_AFTER_BURNIN
+  if drug == 'DHA-PPQ':
+    most_dangerous_mdr = '2-2'
+  else:
+    most_dangerous_mdr = '2-4'
+
+  REPORTDAYS = REPORTDAYS[FIRST_ROW_AFTER_BURNIN:]
+  AUCs = []
+  for onerun in dflist:
+    new_df = df_col_replace(onerun, drug, 1)
+    geno_freq = new_df[most_dangerous_mdr][FIRST_ROW_AFTER_BURNIN:]
+    AUCs.append(np.trapz(geno_freq, x=REPORTDAYS))
+  return AUCs
