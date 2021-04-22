@@ -247,3 +247,47 @@ def fig3_dangerous_triple_or_double_AUC_IQR(ax, m, c, a, pattern, option):
   colors = ['#cadab0', '#a6cfd8', '#d1a29b'] # green, blue, coral
   for patch, color in zip(bplot['boxes'], colors):
     patch.set_facecolor(color)
+
+def fig3_dangerous_five_combined_AUC_IQR(ax, m, c, a):
+  from plot_helper import calculate_AUC_from_dflist_for_dangerous_triple, \
+                          calculate_AUC_from_dflist_for_dangerous_double
+  labels = ['MFT', 'Adaptive Cycling', '5-Year Cycling']
+
+  # type 1 - 'TYY..Y2.'
+  AUCs_m1 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(m, 'TYY..Y2.'))
+  AUCs_c1 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(c, 'TYY..Y2.'))
+  AUCs_a1 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(a, 'TYY..Y2.'))
+  # type 2 - 'TYY..Y2.'
+  AUCs_m2 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(m, 'KNF..Y2.'))
+  AUCs_c2 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(c, 'KNF..Y2.'))
+  AUCs_a2 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(a, 'KNF..Y2.'))
+  # type 3 - wrt DHA-PPQ
+  AUCs_m3 = np.array(calculate_AUC_from_dflist_for_dangerous_double(m, 'DHA-PPQ'))
+  AUCs_c3 = np.array(calculate_AUC_from_dflist_for_dangerous_double(c, 'DHA-PPQ'))
+  AUCs_a3 = np.array(calculate_AUC_from_dflist_for_dangerous_double(a, 'DHA-PPQ'))
+  # type 4 - wrt ASAQ
+  AUCs_m4 = np.array(calculate_AUC_from_dflist_for_dangerous_double(m, 'ASAQ'))
+  AUCs_c4 = np.array(calculate_AUC_from_dflist_for_dangerous_double(c, 'ASAQ'))
+  AUCs_a4 = np.array(calculate_AUC_from_dflist_for_dangerous_double(a, 'ASAQ'))
+  # type 5 - wrt AL
+  AUCs_m5 = np.array(calculate_AUC_from_dflist_for_dangerous_double(m, 'AL'))
+  AUCs_c5 = np.array(calculate_AUC_from_dflist_for_dangerous_double(c, 'AL'))
+  AUCs_a5 = np.array(calculate_AUC_from_dflist_for_dangerous_double(a, 'AL'))
+
+  AUCs_m = AUCs_m1 + AUCs_m2 + AUCs_m3 + AUCs_m4 + AUCs_m5
+  AUCs_c = AUCs_c1 + AUCs_c2 + AUCs_c3 + AUCs_c4 + AUCs_c5
+  AUCs_a = AUCs_a1 + AUCs_a2 + AUCs_a3 + AUCs_a4 + AUCs_a5
+
+  all_data = [AUCs_m, AUCs_c, AUCs_a]
+  # rectangular box plot
+  bplot = ax.boxplot(all_data,
+                     vert=False,  # vertical box alignment
+                     patch_artist=True,  # fill with color
+                     showfliers=False, # just show IQR and 90% range 
+                     medianprops=dict(color='k'), # black median line 
+                     labels=labels)  # will be used to label x-ticks
+  
+  colors = ['#cadab0', '#a6cfd8', '#d1a29b'] # green, blue, coral
+  for patch, color in zip(bplot['boxes'], colors):
+    patch.set_facecolor(color)
+  return all_data
