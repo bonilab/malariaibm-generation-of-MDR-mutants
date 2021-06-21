@@ -211,7 +211,7 @@ def fig2_dangerous_double(ax, dflist_arg, drug, IQR_only=False, annoty=None):
     annotation_string += "\n"
     annotation_string += "AUC = %s (%s-%s)" % (auc, auc_l, auc_u)
     ax.text(ANNOTATION_X_LOCATION, annoty*0.55, annotation_string)
-
+    
 # need 100 simulation data for each strategy, as dataframe
 # `m` stands for MFT
 # `c` stands for 5-Year Cycling
@@ -221,7 +221,7 @@ def fig2_dangerous_double(ax, dflist_arg, drug, IQR_only=False, annoty=None):
 def fig3_dangerous_triple_or_double_AUC_IQR(ax, m, c, a, pattern, option):
   from plot_helper import calculate_AUC_from_dflist_for_dangerous_triple, \
                           calculate_AUC_from_dflist_for_dangerous_double
-  labels = ['MFT', 'Adaptive Cycling', '5-Year Cycling']
+  labels = ['MFT', '5-Year Cycling', 'Adaptive Cycling']
 
   # calculate 90% CI and IQR, for all 3 strategies
   if option == 'triple':
@@ -251,7 +251,7 @@ def fig3_dangerous_triple_or_double_AUC_IQR(ax, m, c, a, pattern, option):
 def fig3_dangerous_five_combined_AUC_IQR(ax, m, c, a):
   from plot_helper import calculate_AUC_from_dflist_for_dangerous_triple, \
                           calculate_AUC_from_dflist_for_dangerous_double
-  labels = ['MFT', 'Adaptive Cycling', '5-Year Cycling']
+  labels = ['MFT', '5-Year Cycling', 'Adaptive Cycling']
 
   # type 1 - 'TYY..Y2.'
   AUCs_m1 = np.array(calculate_AUC_from_dflist_for_dangerous_triple(m, 'TYY..Y2.'))
