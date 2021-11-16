@@ -9,3 +9,5 @@ cmake-*
 monthly_data\.txt
 
 .DS_Store
+mdr_analysis/raw_data/
+!mdr_analysis/raw_data/rename.sh
