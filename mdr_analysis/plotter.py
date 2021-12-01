@@ -132,7 +132,7 @@ def fig2_dangerous_triple(ax, dflist, pattern, IQR_only=False, annoty=None, ntf=
     if ntf is not None:
       annotation_string += "\n"
       annotation_string += "NTF = %s" % ntf
-    ax.text(ANNOTATION_X_LOCATION, annoty*0.55, annotation_string)
+    ax.text(ANNOTATION_X_LOCATION, annoty*0.78, annotation_string, verticalalignment='top', size=14)
 
 def fig2_dangerous_double(ax, dflist_arg, drug, IQR_only=False, annoty=None):
   option = 1
@@ -210,7 +210,7 @@ def fig2_dangerous_double(ax, dflist_arg, drug, IQR_only=False, annoty=None):
     annotation_string += r"$T_{.01}$ = %s" % t_01
     annotation_string += "\n"
     annotation_string += "AUC = %s (%s-%s)" % (auc, auc_l, auc_u)
-    ax.text(ANNOTATION_X_LOCATION, annoty*0.55, annotation_string)
+    ax.text(ANNOTATION_X_LOCATION, annoty*0.78, annotation_string, verticalalignment='top', size=14)
     
 # need 100 simulation data for each strategy, as dataframe
 # `m` stands for MFT
