@@ -7,7 +7,7 @@ import matplotlib.ticker as ticker
 from plot_helper import xaxis_label_ticker, coloring_legend, df_col_replace
 from constant import FIRST_ROW_AFTER_BURNIN, ANNOTATION_X_LOCATION
 
-def fig1_plot_IQR(ax, dflist_arg, drug, IQR_only=False, annoty=None):
+def fig1_plot_IQR(ax, dflist_arg, drug, IQR_only=False, annoty=None, marker_2_2s=False):
   option = 1
   from constant import REPORTDAYS
   REPORTDAYS = REPORTDAYS[FIRST_ROW_AFTER_BURNIN:]
@@ -19,6 +19,11 @@ def fig1_plot_IQR(ax, dflist_arg, drug, IQR_only=False, annoty=None):
     dflist[i].reset_index(drop=True, inplace=True)
   # combine columns wanted into one df, for each MDR
   mdr_cases = list(dflist[0].columns)
+  # print(mdr_cases)
+  idx_most_dang_double = mdr_cases.index('2-2') if drug == 'DHA-PPQ' else mdr_cases.index('2-4')
+  idx_2_2 = mdr_cases.index('2-2')
+  # print(idx_most_dang_double)
+  # print(idx_2_2)
   all_MDR_across_run = []
   for i in range(len(mdr_cases)):
     all_MDR_across_run.append(pd.DataFrame(columns=range(241))) # 241 rows of data are in output file without burn-in
@@ -43,11 +48,11 @@ def fig1_plot_IQR(ax, dflist_arg, drug, IQR_only=False, annoty=None):
   # Mark where it exceeds the 1% and 10% for most-dangerous type
   idx_one_percent = -1
   idx_ten_percent = -1
-  for idx,val in enumerate(all_MDR_IQR[-1][2]):
+  for idx,val in enumerate(all_MDR_IQR[idx_most_dang_double][2]):
     if val > 0.01:
       idx_one_percent = idx
       break
-  for idx,val in enumerate(all_MDR_IQR[-1][2]):
+  for idx,val in enumerate(all_MDR_IQR[idx_most_dang_double][2]):
     if val > 0.1:
       idx_ten_percent = idx
       break
@@ -55,6 +60,23 @@ def fig1_plot_IQR(ax, dflist_arg, drug, IQR_only=False, annoty=None):
     ax.plot(REPORTDAYS[idx_one_percent], all_MDR_IQR[-1][2][idx_one_percent], 'o', color='k')
   if idx_ten_percent != -1:
     ax.plot(REPORTDAYS[idx_ten_percent], all_MDR_IQR[-1][2][idx_ten_percent], 'o', color='k')
+
+  if marker_2_2s:
+    idx_one_percent_2_2 = -1
+    idx_ten_percent_2_2 = -1
+    for idx,val in enumerate(all_MDR_IQR[idx_2_2][2]):
+      if val > 0.01:
+        idx_one_percent_2_2 = idx
+        break
+    for idx,val in enumerate(all_MDR_IQR[idx_2_2][2]):
+      if val > 0.1:
+        idx_ten_percent_2_2 = idx
+        break
+    if idx_one_percent_2_2 != -1:
+      # print(REPORTDAYS[idx_one_percent_2_2], all_MDR_IQR[idx_2_2][2][idx_one_percent_2_2])
+      ax.plot(REPORTDAYS[idx_one_percent_2_2], all_MDR_IQR[idx_2_2][2][idx_one_percent_2_2], '^', color='k')
+    if idx_ten_percent_2_2 != -1:
+      ax.plot(REPORTDAYS[idx_ten_percent_2_2], all_MDR_IQR[idx_2_2][2][idx_ten_percent_2_2], '^', color='k')
 
 def fig1_plot_vars(ax, dflist, drug):
   from constant import REPORTDAYS
