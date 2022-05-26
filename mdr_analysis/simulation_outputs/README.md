@@ -1,0 +1,1 @@
+This folder contains all the MaSim output files from Penn State Roar. To re-generate results, please download the file from Github release and upzip them in this folder.
