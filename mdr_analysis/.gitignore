@@ -2,6 +2,8 @@ simulation_outputs/*
 !simulation_outputs/rename.sh
 !simulation_outputs/rename.py
 !simulation_outputs/README.md
+!simulation_outputs/script_to_organize_nguyens_input_files.py
+!simulation_outputs/script_to_organize_nguyens_output_files.py
 
 saved_figures/*
 !saved_figures/.gitkeep
