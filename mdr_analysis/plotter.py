@@ -1,4 +1,4 @@
-def fig_a_median_trend(ax, fdir_path, act_name, range_95=False, triangle_marker='on'):
+def fig_a_median_trend(ax, fdir_path, act_name, range_95=True, triangle_marker='on'):
   import os
   import pandas as pd
   import numpy as np
@@ -26,16 +26,6 @@ def fig_a_median_trend(ax, fdir_path, act_name, range_95=False, triangle_marker=
     for onedf in df_list:
       targeted_sum_genofreq_100runs.append(onedf[col])
     median_genofreq = np.percentile(targeted_sum_genofreq_100runs, 50, axis=0)
-    if col == most_dang_double_type:
-      # calculate AUC IQR
-      auc_100runs = np.apply_along_axis(calc_after_burin_auc_from_list, 1, targeted_sum_genofreq_100runs)
-      # find T01 and T1 for most dangerous double
-      t_0p01_idx = np.argmax(median_genofreq>=0.01)
-      t_0p1_idx = np.argmax(median_genofreq>=0.1)
-      if t_0p01_idx != 0:
-        ax.plot(REPORTDAYS[t_0p01_idx], median_genofreq[t_0p01_idx], 'o', color='k')
-      if t_0p1_idx != 0:
-        ax.plot(REPORTDAYS[t_0p1_idx], median_genofreq[t_0p1_idx], 'o', color='k')
     col_color = coloring_legend(col, option=1)
     ax.plot( # median
       REPORTDAYS[FIRST_ROW_AFTER_BURNIN:], 
@@ -55,6 +45,16 @@ def fig_a_median_trend(ax, fdir_path, act_name, range_95=False, triangle_marker=
         np.percentile(targeted_sum_genofreq_100runs, 97.5, axis=0)[FIRST_ROW_AFTER_BURNIN:], 
         color=col_color, alpha=0.1
       )
+    if col == most_dang_double_type:
+      # calculate AUC IQR
+      auc_100runs = np.apply_along_axis(calc_after_burin_auc_from_list, 1, targeted_sum_genofreq_100runs)
+      # find T01 and T1 for most dangerous double
+      t_0p01_idx = np.argmax(median_genofreq>=0.01)
+      t_0p1_idx = np.argmax(median_genofreq>=0.1)
+      if t_0p01_idx != 0:
+        ax.plot(REPORTDAYS[t_0p01_idx], median_genofreq[t_0p01_idx], 'o', color='k')
+      if t_0p1_idx != 0:
+        ax.plot(REPORTDAYS[t_0p1_idx], median_genofreq[t_0p1_idx], 'o', color='k')
     if triangle_marker == 'on' and most_dang_double_type == '2-4' and col == '2-2':
       # find T01 and T1 for '2-2' double
       t_0p01_idx = np.argmax(median_genofreq>=0.01)
@@ -162,7 +162,7 @@ def fig_b_plot_annotator(ax, x_20, t_0p01_idx, auc, ntf, annoty):
   annot_string += '\n'
   ax.text(ANNOTATION_X_LOCATION, annoty*0.90, annot_string, verticalalignment='top', size=14)
 
-def fig_b_dangerous_triple(ax, fdir_path, targeted_regex_pattern, range_95=False, annoty=None): 
+def fig_b_dangerous_triple(ax, fdir_path, targeted_regex_pattern, range_95=True, annoty=None): 
   from plot_helper import ntf_string_prep
   import numpy as np
   import pandas as pd
@@ -221,7 +221,7 @@ def fig_b_dangerous_triple(ax, fdir_path, targeted_regex_pattern, range_95=False
       annoty=annoty
     )
 
-def fig_b_dangerous_double(ax, fdir_path, act_name, range_95=False, annoty=None):
+def fig_b_dangerous_double(ax, fdir_path, act_name, range_95=True, annoty=None):
   import numpy as np
   import pandas as pd
   import os
@@ -250,18 +250,6 @@ def fig_b_dangerous_double(ax, fdir_path, act_name, range_95=False, annoty=None)
     for onedf in df_list:
       targeted_sum_genofreq_100runs.append(onedf[col])
     median_genofreq = np.percentile(targeted_sum_genofreq_100runs, 50, axis=0)
-    if col == most_dang_double_type:
-      # calculate AUC IQR
-      auc_100runs = np.apply_along_axis(calc_after_burin_auc_from_list, 1, targeted_sum_genofreq_100runs)
-      auc_median, auc_lq, auc_uq = np.percentile(auc_100runs, [50, 25, 75])
-      x_20 = median_genofreq[-1]
-      # find T01 and T1 for most dangerous double
-      t_0p01_idx = np.argmax(median_genofreq>=0.01)
-      t_0p1_idx = np.argmax(median_genofreq>=0.1)
-      if t_0p01_idx != 0:
-        ax.plot(REPORTDAYS[t_0p01_idx], median_genofreq[t_0p01_idx], 'o', color='k')
-      if t_0p1_idx != 0:
-        ax.plot(REPORTDAYS[t_0p1_idx], median_genofreq[t_0p1_idx], 'o', color='k')
     col_color = coloring_legend(col, option=1)
     ax.plot( # median
       REPORTDAYS[FIRST_ROW_AFTER_BURNIN:], 
@@ -281,6 +269,18 @@ def fig_b_dangerous_double(ax, fdir_path, act_name, range_95=False, annoty=None)
         np.percentile(targeted_sum_genofreq_100runs, 97.5, axis=0)[FIRST_ROW_AFTER_BURNIN:], 
         color=col_color, alpha=0.1
       )
+    if col == most_dang_double_type:
+      # calculate AUC IQR
+      auc_100runs = np.apply_along_axis(calc_after_burin_auc_from_list, 1, targeted_sum_genofreq_100runs)
+      auc_median, auc_lq, auc_uq = np.percentile(auc_100runs, [50, 25, 75])
+      x_20 = median_genofreq[-1]
+      # find T01 and T1 for most dangerous double
+      t_0p01_idx = np.argmax(median_genofreq>=0.01)
+      t_0p1_idx = np.argmax(median_genofreq>=0.1)
+      if t_0p01_idx != 0:
+        ax.plot(REPORTDAYS[t_0p01_idx], median_genofreq[t_0p01_idx], 'o', color='k')
+      if t_0p1_idx != 0:
+        ax.plot(REPORTDAYS[t_0p1_idx], median_genofreq[t_0p1_idx], 'o', color='k')
   if annoty is not None:
     fig_b_plot_annotator(
       ax, 
