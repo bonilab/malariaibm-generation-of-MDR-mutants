@@ -162,7 +162,7 @@ def fig_b_plot_annotator(ax, x_20, t_0p01_idx, auc, ntf, annoty):
   annot_string += '\n'
   ax.text(ANNOTATION_X_LOCATION, annoty*0.90, annot_string, verticalalignment='top', size=14)
 
-def fig_b_dangerous_triple(ax, fdir_path, targeted_regex_pattern, range_95=True, annoty=None): 
+def fig_b_dangerous_triple(ax, fdir_path, targeted_regex_pattern, range_95=False, annoty=None): 
   from plot_helper import ntf_string_prep
   import numpy as np
   import pandas as pd
